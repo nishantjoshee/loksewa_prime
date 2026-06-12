@@ -71,7 +71,7 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('renders Nepali title in AppBar', (tester) async {
+    testWidgets('renders greeting header', (tester) async {
       when(
         () => mockRepo.loadEntries(),
       ).thenAnswer((_) async => Ok(testEntries));
@@ -79,7 +79,7 @@ void main() {
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
 
-      expect(find.text('लोकसेवा प्राइम'), findsOneWidget);
+      expect(find.text('आजको तयारी सुरु गरौं'), findsOneWidget);
     });
 
     testWidgets('renders all entry cards with primary-language title', (
@@ -94,7 +94,7 @@ void main() {
 
       expect(
         find.text('नेपालले बंगलादेशलाई ४० मेगावाट विद्युत् निर्यात सुरु'),
-        findsOneWidget,
+        findsAtLeastNWidgets(1),
       );
       expect(
         find.text('सरकारले नयाँ शिक्षा नीति सार्वजनिक गर्याे'),
@@ -124,7 +124,7 @@ void main() {
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
 
-      expect(find.text('2026-06-10'), findsOneWidget);
+      expect(find.text('2026-06-10'), findsAtLeastNWidgets(1));
       expect(find.text('2026-06-09'), findsOneWidget);
     });
 

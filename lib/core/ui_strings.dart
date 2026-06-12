@@ -93,6 +93,38 @@ class UiStrings {
 
   static const String readLabelNp = 'पढिसकिएको';
   static const String readLabelEn = 'Read';
+
+  // Greetings — time-of-day
+  static const String greetingMorningNp = 'शुभ प्रभात';
+  static const String greetingMorningEn = 'Good morning';
+  static const String greetingAfternoonNp = 'शुभ दिउँसो';
+  static const String greetingAfternoonEn = 'Good afternoon';
+  static const String greetingEveningNp = 'शुभ साँझ';
+  static const String greetingEveningEn = 'Good evening';
+  static const String greetingSubtitleNp = 'आजको तयारी सुरु गरौं';
+  static const String greetingSubtitleEn = "Let's prepare for today";
+
+  // Date section headers
+  static const String todayLabelNp = 'आज';
+  static const String todayLabelEn = 'Today';
+  static const String yesterdayLabelNp = 'हिजो';
+  static const String yesterdayLabelEn = 'Yesterday';
+  static const String thisWeekLabelNp = 'यो हप्ता';
+  static const String thisWeekLabelEn = 'This week';
+  static const String olderLabelNp = 'पुराना';
+  static const String olderLabelEn = 'Older';
+
+  // Hero card
+  static const String heroTitleNp = 'आजको मुख्य समाचार';
+  static const String heroTitleEn = "Today's top story";
+  static const String heroReadMoreNp = 'पढ्नुहोस्';
+  static const String heroReadMoreEn = 'Read more';
+  static String heroNewArticlesNp(int count) => 'आज $count वटा नयाँ समाचार';
+  static String heroNewArticlesEn(int count) => '$count new articles today';
+
+  // Streak
+  static const String streakLabelNp = 'दिन';
+  static const String streakLabelEn = 'day streak';
 }
 
 class UiStringsData {
@@ -128,6 +160,18 @@ class UiStringsData {
   final String appVersion;
   final String all;
   final String readLabel;
+  final String greetingMorning;
+  final String greetingAfternoon;
+  final String greetingEvening;
+  final String greetingSubtitle;
+  final String todayLabel;
+  final String yesterdayLabel;
+  final String thisWeekLabel;
+  final String olderLabel;
+  final String heroTitle;
+  final String heroReadMore;
+  final String streakLabel;
+  final String Function(int count) heroNewArticles;
 
   const UiStringsData._({
     required this.appTitle,
@@ -162,6 +206,18 @@ class UiStringsData {
     required this.appVersion,
     required this.all,
     required this.readLabel,
+    required this.greetingMorning,
+    required this.greetingAfternoon,
+    required this.greetingEvening,
+    required this.greetingSubtitle,
+    required this.todayLabel,
+    required this.yesterdayLabel,
+    required this.thisWeekLabel,
+    required this.olderLabel,
+    required this.heroTitle,
+    required this.heroReadMore,
+    required this.streakLabel,
+    required this.heroNewArticles,
   });
 
   factory UiStringsData.forLanguage(String language) {
@@ -209,6 +265,32 @@ class UiStringsData {
       appVersion: UiStrings.appVersion,
       all: isNp ? UiStrings.allNp : UiStrings.allEn,
       readLabel: isNp ? UiStrings.readLabelNp : UiStrings.readLabelEn,
+      greetingMorning: isNp
+          ? UiStrings.greetingMorningNp
+          : UiStrings.greetingMorningEn,
+      greetingAfternoon: isNp
+          ? UiStrings.greetingAfternoonNp
+          : UiStrings.greetingAfternoonEn,
+      greetingEvening: isNp
+          ? UiStrings.greetingEveningNp
+          : UiStrings.greetingEveningEn,
+      greetingSubtitle: isNp
+          ? UiStrings.greetingSubtitleNp
+          : UiStrings.greetingSubtitleEn,
+      todayLabel: isNp ? UiStrings.todayLabelNp : UiStrings.todayLabelEn,
+      yesterdayLabel: isNp
+          ? UiStrings.yesterdayLabelNp
+          : UiStrings.yesterdayLabelEn,
+      thisWeekLabel: isNp
+          ? UiStrings.thisWeekLabelNp
+          : UiStrings.thisWeekLabelEn,
+      olderLabel: isNp ? UiStrings.olderLabelNp : UiStrings.olderLabelEn,
+      heroTitle: isNp ? UiStrings.heroTitleNp : UiStrings.heroTitleEn,
+      heroReadMore: isNp ? UiStrings.heroReadMoreNp : UiStrings.heroReadMoreEn,
+      streakLabel: isNp ? UiStrings.streakLabelNp : UiStrings.streakLabelEn,
+      heroNewArticles: isNp
+          ? UiStrings.heroNewArticlesNp
+          : UiStrings.heroNewArticlesEn,
     );
   }
 }

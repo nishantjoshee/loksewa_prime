@@ -70,8 +70,13 @@ class EntryCard extends StatelessWidget {
                           ),
                           child: Semantics(
                             label:
-                                '${language == 'np' ? 'ट्यागहरू' : 'Tags'}: ${entry.category}',
-                            child: Text(entry.category, style: chipStyle),
+                                '${language == 'np' ? 'ट्यागहरू' : 'Tags'}: ${language == 'np' ? entry.category : entry.categoryEn}',
+                            child: Text(
+                              language == 'np'
+                                  ? entry.category
+                                  : entry.categoryEn,
+                              style: chipStyle,
+                            ),
                           ),
                         ),
                         const Spacer(),

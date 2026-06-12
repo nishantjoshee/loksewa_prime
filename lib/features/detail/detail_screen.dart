@@ -126,9 +126,10 @@ class _DetailContent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Semantics(
-                label: '${strings.tags}: ${entry.category}',
+                label:
+                    '${strings.tags}: ${isNp ? entry.category : entry.categoryEn}',
                 child: Text(
-                  entry.category,
+                  isNp ? entry.category : entry.categoryEn,
                   style: textTheme.labelSmall?.copyWith(
                     color: colors.onPrimaryContainer,
                   ),

@@ -19,6 +19,90 @@ final filteredFeedProvider = Provider<AsyncValue<List<CurrentAffair>>>((ref) {
 
   return feedAsync.whenData((entries) {
     if (category == null) return entries;
-    return entries.where((e) => e.category == category).toList();
+    return entries
+        .where((e) => e.category == category || e.categoryEn == category)
+        .toList();
+  });
+});
+
+enum DateBucket { today, yesterday, thisWeek, older }
+
+class DateGroup {
+  final DateBucket bucket;
+  final String label;
+  final List<CurrentAffair> entries;
+
+  const DateGroup({
+    required this.bucket,
+    required this.label,
+    required this.entries,
+  });
+}
+
+final groupedFeedProvider = Provider<AsyncValue<List<DateGroup>>>((ref) {
+  final feedAsync = ref.watch(filteredFeedProvider);
+  return feedAsync.whenData((entries) {
+    if (entries.isEmpty) return [];
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    final weekAgo = today.subtract(const Duration(days: 7));
+
+    final todayStr =
+        '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+    final yesterdayStr =
+        '${yesterday.year}-${yesterday.month.toString().padLeft(2, '0')}-${yesterday.day.toString().padLeft(2, '0')}';
+    final weekAgoStr =
+        '${weekAgo.year}-${weekAgo.month.toString().padLeft(2, '0')}-${weekAgo.day.toString().padLeft(2, '0')}';
+
+    final todayList = <CurrentAffair>[];
+    final yesterdayList = <CurrentAffair>[];
+    final weekList = <CurrentAffair>[];
+    final olderList = <CurrentAffair>[];
+
+    for (final entry in entries) {
+      if (entry.date == todayStr) {
+        todayList.add(entry);
+      } else if (entry.date == yesterdayStr) {
+        yesterdayList.add(entry);
+      } else if (entry.date.compareTo(weekAgoStr) >= 0) {
+        weekList.add(entry);
+      } else {
+        olderList.add(entry);
+      }
+    }
+
+    final groups = <DateGroup>[];
+    if (todayList.isNotEmpty) {
+      groups.add(
+        DateGroup(bucket: DateBucket.today, label: 'today', entries: todayList),
+      );
+    }
+    if (yesterdayList.isNotEmpty) {
+      groups.add(
+        DateGroup(
+          bucket: DateBucket.yesterday,
+          label: 'yesterday',
+          entries: yesterdayList,
+        ),
+      );
+    }
+    if (weekList.isNotEmpty) {
+      groups.add(
+        DateGroup(
+          bucket: DateBucket.thisWeek,
+          label: 'thisWeek',
+          entries: weekList,
+        ),
+      );
+    }
+    if (olderList.isNotEmpty) {
+      groups.add(
+        DateGroup(bucket: DateBucket.older, label: 'older', entries: olderList),
+      );
+    }
+
+    return groups;
   });
 });
