@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loksewa_prime/core/result.dart';
 import 'package:loksewa_prime/data/models/current_affair.dart';
 import 'package:loksewa_prime/data/repository/content_repo.dart';
 import 'package:loksewa_prime/features/feed/feed_screen.dart';
@@ -51,7 +52,7 @@ void main() {
   Widget buildTestApp() {
     return ProviderScope(
       overrides: [contentRepositoryProvider.overrideWithValue(mockRepo)],
-      child: MaterialApp(theme: AppTheme.light, home: FeedScreen()),
+      child: MaterialApp(theme: AppTheme.light, home: const FeedScreen()),
     );
   }
 
@@ -60,7 +61,7 @@ void main() {
       // ignore: discarded_futures
       when(
         () => mockRepo.loadEntries(),
-      ).thenAnswer((_) => Completer<List<CurrentAffair>>().future);
+      ).thenAnswer((_) => Completer<Result<List<CurrentAffair>>>().future);
 
       await tester.pumpWidget(buildTestApp());
       await tester.pump();
@@ -69,7 +70,9 @@ void main() {
     });
 
     testWidgets('renders Nepali title in AppBar', (tester) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -78,7 +81,9 @@ void main() {
     });
 
     testWidgets('renders all entry cards with Nepali text', (tester) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -103,7 +108,9 @@ void main() {
     });
 
     testWidgets('renders category chips for each entry', (tester) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -115,7 +122,9 @@ void main() {
     testWidgets('renders metadata (date + source) for each entry', (
       tester,
     ) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -129,7 +138,9 @@ void main() {
     testWidgets('renders Nepali summary with text overflow handling', (
       tester,
     ) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -143,7 +154,9 @@ void main() {
     });
 
     testWidgets('renders AppBar action buttons', (tester) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -155,7 +168,9 @@ void main() {
     testWidgets('renders Card widgets with InkWell for tap interaction', (
       tester,
     ) async {
-      when(() => mockRepo.loadEntries()).thenAnswer((_) async => testEntries);
+      when(
+        () => mockRepo.loadEntries(),
+      ).thenAnswer((_) async => Ok(testEntries));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
@@ -167,7 +182,7 @@ void main() {
     testWidgets('shows error state when repository fails', (tester) async {
       when(
         () => mockRepo.loadEntries(),
-      ).thenThrow(Exception('Failed to load content'));
+      ).thenAnswer((_) async => const Err('Failed to load content'));
 
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();

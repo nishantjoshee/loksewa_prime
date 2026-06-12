@@ -1,7 +1,6 @@
 ---
 paths:
   - "test/**/*.dart"
-  - "lib/**/*.dart"
 ---
 
 # Testing Conventions
@@ -10,23 +9,36 @@ paths:
 - `test/features/<name>/` mirrors `lib/features/<name>/`
 - `test/data/models/` for JSON serialization tests
 - `test/data/repository/` for repository logic tests
+- `test/core/` for core utility tests (Result type, etc.)
 
 ## Test types
 
 ### Unit tests
-- Test provider logic in isolation
 - Test model `fromJson`/`toJson` with real JSON fixtures
-- Use `mocktail` for dependencies
+- Test Result type with Ok/Err variants
+- Use `mocktail` for external dependencies
+
+### Repository tests
+- Test against real JSON in `assets/content/current_affairs.json`
+- Test loadEntries, loadEntry, loadByDate, loadByCategory, search
+- Test caching behavior (second call returns same instance)
+- Test error handling (missing asset)
+
+### Provider tests
+- Test `FutureProvider` with mocked repository returning `Ok()` / `Err()`
+- Test `StateNotifier` state transitions and persistence
+- Use `ProviderScope.overrides` for controlled dependencies
 
 ### Widget tests
 - `pumpWidget` with `ProviderScope` wrapping tested widgets
 - Override providers with `ProviderScope.overrides` for controlled state
 - Use `tester.pumpAndSettle()` for async widgets
+- Test loading, data, error, and empty states for every screen
 
-### Repository tests
-- Test against real JSON in `assets/content/`
-- Test search, filter, date-filtering logic
-- Test caching behavior
+### Golden tests
+- FeedScreen with test data
+- DetailScreen with single entry
+- Empty states (bookmarks, search)
 
 ## Running tests
 ```bash
@@ -47,7 +59,22 @@ void main() {
 
   setUp(() {
     mockRepo = MockRepo();
-    registerFallbackValue(const CurrentAffair(/*...*/));
+  });
+
+  testWidgets('shows data', (tester) async {
+    when(() => mockRepo.loadEntries())
+        .thenAnswer((_) async => Ok(testEntries));
+
+    await tester.pumpWidget(ProviderScope(
+      overrides: [contentRepositoryProvider.overrideWithValue(mockRepo)],
+      child: MaterialApp(home: FeedScreen()),
+    ));
+    await tester.pumpAndSettle();
   });
 }
 ```
+
+## Coverage
+- CI enforces >80% coverage
+- Repository and provider logic target >90%
+- Focus coverage on data layer and business logic

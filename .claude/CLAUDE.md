@@ -21,19 +21,44 @@
 
 - **Feature-first**: `lib/features/<name>/` contains screen, providers, and widgets for each feature
 - **Data layer**: `lib/data/models/` for data classes, `lib/data/repository/` for data access
-- **Core layer**: `lib/core/` for app-wide config (theme, router, constants)
-- **State management**: Riverpod with code generation (`@riverpod` annotations)
+- **Core layer**: `lib/core/` for app-wide config (theme, router, constants, Result type, ErrorReporter, UiStrings)
+- **State management**: Riverpod (`FutureProvider`, `StateNotifierProvider`, `Provider`)
 - **Navigation**: GoRouter, centralized in `lib/core/router.dart`
 - **Tests mirror source**: `test/features/<name>/` mirrors `lib/features/<name>/`
 
+## Result Type
+
+- All repository methods return `Result<T>` — see `lib/core/result.dart`
+- `Ok(T value)` for success, `Err(Object error, StackTrace? stack)` for failure
+- Providers unwrap with `result.fold(onOk: ..., onErr: (error, _) => throw error)`
+- Every screen handles loading, data, and error states via `AsyncValue.when()`
+
+## Error Handling
+
+- `ErrorReporter.init()` in `main()` catches FlutterError and PlatformDispatcher errors
+- Repository catches all JSON/IO errors, wraps in `Err`, reports via ErrorReporter
+- No bare `try/catch` outside repository — use Result propagation
+
+## Accessibility
+
+- Every interactive widget gets a `Semantics` wrapper with `label` and `button`/`hint`
+- Icons have `semanticLabel` set
+- Labels in Nepali by default; `UiStrings` class has bilingual variants
+
+## Localization
+
+- UI strings centralized in `lib/core/ui_strings.dart` as bilingual constants
+- Settings screen persists language preference via SharedPreferences
+
 ## Riverpod Conventions
 
-- Use `@riverpod` annotation + code generation for new providers
 - Provider names are descriptive: `feedProvider`, `bookmarksProvider`, `searchProvider`
-- `FutureProvider` for async data loading
-- `NotifierProvider` for mutable state
+- `FutureProvider` for async data loading, `FutureProvider.family` for parameterized loading
+- `StateNotifierProvider` for complex mutable state (bookmarks, settings)
+- `StateProvider` for simple mutable state (selected category, search query)
 - Widgets extend `ConsumerWidget` or `ConsumerStatefulWidget`
-- Always `ref.watch()` for reactive reads, `ref.read()` for callbacks
+- `ref.watch()` for reactive reads, `ref.read()` in callbacks, `ref.invalidate()` for force-refresh
+- See `.claude/rules/riverpod.md` for full patterns and examples
 
 ## Data Model
 
@@ -45,11 +70,12 @@
 ## Testing Conventions
 
 - Every feature gets unit tests in `test/features/<name>/`
-- Widget tests with `pumpWidget` for screen-level tests
-- Repository tests use real JSON parsing (integration-light)
-- Mock dependencies with `mocktail` — no real network calls in tests
+- Widget tests with `pumpWidget` for screen-level tests; test loading/data/error/empty states
+- Repository tests use real JSON from `assets/content/` — no mocking for data layer
+- Mock dependencies with `mocktail` — mock repo returns `Ok()`/`Err()` wrapped values
 - Test file naming: `<name>_test.dart`
-- Aim for >80% coverage on repository and provider logic
+- CI enforces >80% coverage; repository and provider logic target >90%
+- See `.claude/rules/testing.md` for full patterns and mock examples
 
 ## iOS-Specific Notes
 

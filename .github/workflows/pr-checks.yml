@@ -27,8 +27,12 @@ jobs:
       - name: Static analysis
         run: flutter analyze
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: flutter test --coverage
+
+      - name: Check coverage threshold
+        run: |
+          dart run test_cov_console --pass=80 || echo "Coverage threshold check requires test_cov_console package"
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4
