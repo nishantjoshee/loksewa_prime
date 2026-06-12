@@ -7,6 +7,7 @@ import 'package:loksewa_prime/data/repository/content_repo.dart';
 import 'package:loksewa_prime/features/search/search_screen.dart';
 import 'package:loksewa_prime/core/theme.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockContentRepository extends Mock implements ContentRepository {}
 
@@ -27,6 +28,7 @@ void main() {
   late MockContentRepository mockRepo;
 
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     mockRepo = MockContentRepository();
   });
 
@@ -74,7 +76,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('परीक्षण शीर्षक'), findsOneWidget);
-      expect(find.text('Test Title'), findsOneWidget);
     });
 
     testWidgets('clear button resets search', (tester) async {

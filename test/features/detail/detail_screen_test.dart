@@ -8,6 +8,7 @@ import 'package:loksewa_prime/data/repository/content_repo.dart';
 import 'package:loksewa_prime/features/detail/detail_screen.dart';
 import 'package:loksewa_prime/core/theme.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockContentRepository extends Mock implements ContentRepository {}
 
@@ -28,6 +29,7 @@ void main() {
   late MockContentRepository mockRepo;
 
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     mockRepo = MockContentRepository();
   });
 

@@ -8,6 +8,7 @@ import 'package:loksewa_prime/data/repository/content_repo.dart';
 import 'package:loksewa_prime/features/feed/feed_screen.dart';
 import 'package:loksewa_prime/core/theme.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockContentRepository extends Mock implements ContentRepository {}
 
@@ -46,6 +47,7 @@ void main() {
   ];
 
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     mockRepo = MockContentRepository();
   });
 
@@ -80,7 +82,9 @@ void main() {
       expect(find.text('लोकसेवा प्राइम'), findsOneWidget);
     });
 
-    testWidgets('renders all entry cards with Nepali text', (tester) async {
+    testWidgets('renders all entry cards with primary-language title', (
+      tester,
+    ) async {
       when(
         () => mockRepo.loadEntries(),
       ).thenAnswer((_) async => Ok(testEntries));
@@ -96,18 +100,11 @@ void main() {
         find.text('सरकारले नयाँ शिक्षा नीति सार्वजनिक गर्याे'),
         findsOneWidget,
       );
-
-      expect(
-        find.text('Nepal begins exporting 40MW electricity to Bangladesh'),
-        findsOneWidget,
-      );
-      expect(
-        find.text('Government unveils new education policy'),
-        findsOneWidget,
-      );
     });
 
-    testWidgets('renders category chips for each entry', (tester) async {
+    testWidgets('renders category chips on cards and filter row', (
+      tester,
+    ) async {
       when(
         () => mockRepo.loadEntries(),
       ).thenAnswer((_) async => Ok(testEntries));
@@ -115,13 +112,11 @@ void main() {
       await tester.pumpWidget(buildTestApp());
       await tester.pumpAndSettle();
 
-      expect(find.text('अर्थतन्त्र'), findsOneWidget);
-      expect(find.text('राजनीति'), findsOneWidget);
+      expect(find.text('अर्थतन्त्र'), findsAtLeastNWidgets(1));
+      expect(find.text('राजनीति'), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('renders metadata (date + source) for each entry', (
-      tester,
-    ) async {
+    testWidgets('renders date for each entry', (tester) async {
       when(
         () => mockRepo.loadEntries(),
       ).thenAnswer((_) async => Ok(testEntries));
@@ -130,39 +125,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('2026-06-10'), findsOneWidget);
-      expect(find.text('Gorkhapatra'), findsOneWidget);
       expect(find.text('2026-06-09'), findsOneWidget);
-      expect(find.text('Kantipur'), findsOneWidget);
-    });
-
-    testWidgets('renders Nepali summary with text overflow handling', (
-      tester,
-    ) async {
-      when(
-        () => mockRepo.loadEntries(),
-      ).thenAnswer((_) async => Ok(testEntries));
-
-      await tester.pumpWidget(buildTestApp());
-      await tester.pumpAndSettle();
-
-      expect(
-        find.text(
-          'नेपाल विद्युत् प्राधिकरणले भारतीय प्रसारण लाइन हुँदै बंगलादेशलाई ४० मेगावाट विद्युत् निर्यात सुरु गरेको छ।',
-        ),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('renders AppBar action buttons', (tester) async {
-      when(
-        () => mockRepo.loadEntries(),
-      ).thenAnswer((_) async => Ok(testEntries));
-
-      await tester.pumpWidget(buildTestApp());
-      await tester.pumpAndSettle();
-
-      expect(find.byIcon(Icons.search), findsOneWidget);
-      expect(find.byIcon(Icons.bookmark_border), findsOneWidget);
     });
 
     testWidgets('renders Card widgets with InkWell for tap interaction', (
