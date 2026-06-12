@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/providers/language_provider.dart';
 import '../../core/ui_strings.dart';
 import 'settings_providers.dart';
 
@@ -9,27 +10,32 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
+    final strings = ref.watch(uiStringsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text(UiStrings.settingsNp)),
+      appBar: AppBar(title: Text(strings.settings)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Semantics(
-            label: UiStrings.languageNp,
+            label: strings.language,
             child: ListTile(
               leading: const Icon(Icons.language),
-              title: const Text(UiStrings.languageNp),
-              subtitle: Text(settings.language == 'np' ? 'नेपाली' : 'English'),
+              title: Text(strings.language),
+              subtitle: Text(
+                settings.language == 'np'
+                    ? strings.languageNepali
+                    : strings.languageEnglish,
+              ),
               trailing: SegmentedButton<String>(
-                segments: const [
+                segments: [
                   ButtonSegment(
                     value: 'np',
-                    label: Text(UiStrings.languageNepali),
+                    label: Text(strings.languageNepali),
                   ),
                   ButtonSegment(
                     value: 'en',
-                    label: Text(UiStrings.languageEnglish),
+                    label: Text(strings.languageEnglish),
                   ),
                 ],
                 selected: {settings.language},
@@ -43,10 +49,10 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const Divider(),
           Semantics(
-            label: UiStrings.fontSizeNp,
+            label: strings.fontSize,
             child: ListTile(
               leading: const Icon(Icons.format_size),
-              title: const Text(UiStrings.fontSizeNp),
+              title: Text(strings.fontSize),
               subtitle: Slider(
                 value: settings.fontSize,
                 min: 14,
@@ -61,11 +67,11 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const Divider(),
           Semantics(
-            label: UiStrings.themeNp,
+            label: strings.theme,
             child: ListTile(
               leading: const Icon(Icons.brightness_6),
-              title: const Text(UiStrings.themeNp),
-              subtitle: Text(_themeLabel(settings.themeMode)),
+              title: Text(strings.theme),
+              subtitle: Text(_themeLabel(settings.themeMode, strings)),
               trailing: SegmentedButton<ThemeMode>(
                 segments: const [
                   ButtonSegment(
@@ -92,11 +98,11 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const Divider(),
           Semantics(
-            label: UiStrings.aboutNp,
-            child: const ListTile(
-              leading: Icon(Icons.info_outline),
-              title: Text(UiStrings.aboutNp),
-              subtitle: Text(UiStrings.appVersion),
+            label: strings.about,
+            child: ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: Text(strings.about),
+              subtitle: Text(strings.appVersion),
             ),
           ),
         ],
@@ -104,11 +110,11 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  String _themeLabel(ThemeMode mode) {
+  String _themeLabel(ThemeMode mode, UiStringsData strings) {
     return switch (mode) {
-      ThemeMode.system => UiStrings.themeSystemNp,
-      ThemeMode.light => UiStrings.themeLightNp,
-      ThemeMode.dark => UiStrings.themeDarkNp,
+      ThemeMode.system => strings.themeSystem,
+      ThemeMode.light => strings.themeLight,
+      ThemeMode.dark => strings.themeDark,
     };
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../core/providers/language_provider.dart';
 import '../../core/ui_strings.dart';
 import '../../data/models/current_affair.dart';
 import '../bookmarks/bookmarks_providers.dart';
@@ -15,15 +16,15 @@ class DetailScreen extends ConsumerWidget {
     final detailAsync = ref.watch(detailProvider(entryId));
     final bookmarksNotifier = ref.watch(bookmarksProvider.notifier);
     final isBookmarked = ref.watch(bookmarksProvider).contains(entryId);
+    final strings = ref.watch(uiStringsProvider);
+    final language = ref.watch(languageProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(UiStrings.detailNp),
+        title: Text(strings.detail),
         actions: [
           Semantics(
-            label: isBookmarked
-                ? UiStrings.removeBookmarkNp
-                : UiStrings.bookmarksNp,
+            label: isBookmarked ? strings.removeBookmark : strings.bookmarks,
             button: true,
             child: IconButton(
               icon: Icon(isBookmarked ? Icons.bookmark : Icons.bookmark_border),
@@ -31,7 +32,7 @@ class DetailScreen extends ConsumerWidget {
             ),
           ),
           Semantics(
-            label: UiStrings.shareNp,
+            label: strings.share,
             button: true,
             child: IconButton(
               icon: const Icon(Icons.share),
@@ -52,17 +53,22 @@ class DetailScreen extends ConsumerWidget {
       body: detailAsync.when(
         data: (entry) {
           if (entry == null) {
-            return const Center(child: Text(UiStrings.noResultsNp));
+            return Center(child: Text(strings.noResults));
           }
-          return _DetailContent(entry: entry, isBookmarked: isBookmarked);
+          return _DetailContent(
+            entry: entry,
+            isBookmarked: isBookmarked,
+            language: language,
+            strings: strings,
+          );
         },
-        loading: () => const Center(
+        loading: () => Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text(UiStrings.loadingNp),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+              Text(strings.loading),
             ],
           ),
         ),
@@ -72,10 +78,7 @@ class DetailScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 48),
               const SizedBox(height: 16),
-              Text(
-                '${UiStrings.loadErrorNp}\n$error',
-                textAlign: TextAlign.center,
-              ),
+              Text('${strings.loadError}\n$error', textAlign: TextAlign.center),
             ],
           ),
         ),
@@ -87,14 +90,27 @@ class DetailScreen extends ConsumerWidget {
 class _DetailContent extends StatelessWidget {
   final CurrentAffair entry;
   final bool isBookmarked;
+  final String language;
+  final UiStringsData strings;
 
-  const _DetailContent({required this.entry, required this.isBookmarked});
+  const _DetailContent({
+    required this.entry,
+    required this.isBookmarked,
+    required this.language,
+    required this.strings,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
     final textTheme = theme.textTheme;
+
+    final isNp = language == 'np';
+    final primaryTitle = isNp ? entry.titleNp : entry.titleEn;
+    final secondaryTitle = isNp ? entry.titleEn : entry.titleNp;
+    final primarySummary = isNp ? entry.summaryNp : entry.summaryEn;
+    final secondarySummary = isNp ? entry.summaryEn : entry.summaryNp;
 
     return Semantics(
       label: '${entry.titleNp}. ${entry.titleEn}',
@@ -110,7 +126,7 @@ class _DetailContent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Semantics(
-                label: '${UiStrings.tagsNp}: ${entry.category}',
+                label: '${strings.tags}: ${entry.category}',
                 child: Text(
                   entry.category,
                   style: textTheme.labelSmall?.copyWith(
@@ -120,18 +136,23 @@ class _DetailContent extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(entry.titleNp, style: textTheme.headlineLarge),
+            Text(primaryTitle, style: textTheme.headlineLarge),
             const SizedBox(height: 8),
             Text(
-              entry.titleEn,
+              secondaryTitle,
               style: textTheme.headlineMedium?.copyWith(
-                color: colors.onSurface.withValues(alpha: 0.6),
+                color: colors.onSurface.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 20),
-            Text(entry.summaryNp, style: textTheme.bodyLarge),
+            Text(primarySummary, style: textTheme.bodyLarge),
             const SizedBox(height: 16),
-            Text(entry.summaryEn, style: textTheme.bodyMedium),
+            Text(
+              secondarySummary,
+              style: textTheme.bodyMedium?.copyWith(
+                color: colors.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -142,7 +163,7 @@ class _DetailContent extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  '${UiStrings.dateNp}: ${entry.date}',
+                  '${strings.date}: ${entry.date}',
                   style: textTheme.labelMedium,
                 ),
               ],
@@ -153,14 +174,14 @@ class _DetailContent extends StatelessWidget {
                 Icon(Icons.source, size: 16, color: colors.onSurfaceVariant),
                 const SizedBox(width: 6),
                 Text(
-                  '${UiStrings.sourceNp}: ${entry.source}',
+                  '${strings.source}: ${entry.source}',
                   style: textTheme.labelMedium,
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Semantics(
-              label: '${UiStrings.tagsNp}: ${entry.tags.join(', ')}',
+              label: '${strings.tags}: ${entry.tags.join(', ')}',
               child: Wrap(
                 spacing: 8,
                 runSpacing: 4,

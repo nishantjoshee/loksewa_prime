@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/ui_strings.dart';
+import '../../core/providers/language_provider.dart';
 import '../../core/widgets/entry_card.dart';
 import 'search_providers.dart';
 
@@ -35,20 +35,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     final searchAsync = ref.watch(searchResultsProvider);
     final query = ref.watch(searchQueryProvider);
+    final strings = ref.watch(uiStringsProvider);
+    final language = ref.watch(languageProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text(UiStrings.searchNp)),
+      appBar: AppBar(title: Text(strings.search)),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
             child: Semantics(
-              label: UiStrings.searchHintNp,
+              label: strings.searchHint,
               child: TextField(
                 controller: _controller,
                 autofocus: false,
                 decoration: InputDecoration(
-                  hintText: UiStrings.searchHintNp,
+                  hintText: strings.searchHint,
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _controller.text.isNotEmpty
                       ? IconButton(
@@ -79,7 +81,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          UiStrings.searchStartNp,
+                          strings.searchStart,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
@@ -101,7 +103,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                UiStrings.noResultsNp,
+                                strings.noResults,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ],
@@ -115,6 +117,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           final entry = entries[index];
                           return EntryCard(
                             entry: entry,
+                            language: language,
                             onTap: () => context.push('/detail/${entry.id}'),
                           );
                         },
@@ -129,7 +132,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           const Icon(Icons.error_outline, size: 48),
                           const SizedBox(height: 16),
                           Text(
-                            '${UiStrings.loadErrorNp}\n$error',
+                            '${strings.loadError}\n$error',
                             textAlign: TextAlign.center,
                           ),
                         ],

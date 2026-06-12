@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/ui_strings.dart';
+import '../../core/providers/language_provider.dart';
 import '../../core/widgets/entry_card.dart';
 import 'bookmarks_providers.dart';
 
@@ -12,9 +12,11 @@ class BookmarksScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bookmarkedAsync = ref.watch(bookmarkedEntriesProvider);
     final bookmarksNotifier = ref.watch(bookmarksProvider.notifier);
+    final strings = ref.watch(uiStringsProvider);
+    final language = ref.watch(languageProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text(UiStrings.bookmarksNp)),
+      appBar: AppBar(title: Text(strings.bookmarks)),
       body: bookmarkedAsync.when(
         data: (entries) {
           if (entries.isEmpty) {
@@ -31,7 +33,7 @@ class BookmarksScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    UiStrings.noBookmarksNp,
+                    strings.noBookmarks,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
@@ -66,6 +68,7 @@ class BookmarksScreen extends ConsumerWidget {
                 child: EntryCard(
                   entry: entry,
                   isBookmarked: true,
+                  language: language,
                   onTap: () => context.push('/detail/${entry.id}'),
                 ),
               );
@@ -79,10 +82,7 @@ class BookmarksScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 48),
               const SizedBox(height: 16),
-              Text(
-                '${UiStrings.loadErrorNp}\n$error',
-                textAlign: TextAlign.center,
-              ),
+              Text('${strings.loadError}\n$error', textAlign: TextAlign.center),
             ],
           ),
         ),

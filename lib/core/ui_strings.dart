@@ -87,4 +87,128 @@ class UiStrings {
   static const String languageEnglish = 'EN';
 
   static const String appVersion = 'Loksewa Prime v1.0.0';
+
+  static const String allNp = 'सबै';
+  static const String allEn = 'All';
+
+  static const String readLabelNp = 'पढिसकिएको';
+  static const String readLabelEn = 'Read';
+}
+
+class UiStringsData {
+  final String appTitle;
+  final String feed;
+  final String search;
+  final String bookmarks;
+  final String settings;
+  final String detail;
+  final String loading;
+  final String loadError;
+  final String noBookmarks;
+  final String searchHint;
+  final String searchStart;
+  final String noResults;
+  final String language;
+  final String fontSize;
+  final String theme;
+  final String themeSystem;
+  final String themeLight;
+  final String themeDark;
+  final String about;
+  final String share;
+  final String date;
+  final String source;
+  final String tags;
+  final String removeBookmark;
+  final String tapToView;
+  final String bookmarkedLabel;
+  final String notBookmarkedLabel;
+  final String languageNepali;
+  final String languageEnglish;
+  final String appVersion;
+  final String all;
+  final String readLabel;
+
+  const UiStringsData._({
+    required this.appTitle,
+    required this.feed,
+    required this.search,
+    required this.bookmarks,
+    required this.settings,
+    required this.detail,
+    required this.loading,
+    required this.loadError,
+    required this.noBookmarks,
+    required this.searchHint,
+    required this.searchStart,
+    required this.noResults,
+    required this.language,
+    required this.fontSize,
+    required this.theme,
+    required this.themeSystem,
+    required this.themeLight,
+    required this.themeDark,
+    required this.about,
+    required this.share,
+    required this.date,
+    required this.source,
+    required this.tags,
+    required this.removeBookmark,
+    required this.tapToView,
+    required this.bookmarkedLabel,
+    required this.notBookmarkedLabel,
+    required this.languageNepali,
+    required this.languageEnglish,
+    required this.appVersion,
+    required this.all,
+    required this.readLabel,
+  });
+
+  factory UiStringsData.forLanguage(String language) {
+    final isNp = language == 'np';
+    return UiStringsData._(
+      appTitle: isNp ? UiStrings.appTitleNp : UiStrings.appTitleEn,
+      feed: isNp ? UiStrings.feedNp : UiStrings.feedEn,
+      search: isNp ? UiStrings.searchNp : UiStrings.searchEn,
+      bookmarks: isNp ? UiStrings.bookmarksNp : UiStrings.bookmarksEn,
+      settings: isNp ? UiStrings.settingsNp : UiStrings.settingsEn,
+      detail: isNp ? UiStrings.detailNp : UiStrings.detailEn,
+      loading: isNp ? UiStrings.loadingNp : UiStrings.loadingEn,
+      loadError: isNp ? UiStrings.loadErrorNp : UiStrings.loadErrorEn,
+      noBookmarks: isNp ? UiStrings.noBookmarksNp : UiStrings.noBookmarksEn,
+      searchHint: isNp ? UiStrings.searchHintNp : UiStrings.searchHintEn,
+      searchStart: isNp ? UiStrings.searchStartNp : UiStrings.searchStartEn,
+      noResults: isNp ? UiStrings.noResultsNp : UiStrings.noResultsEn,
+      language: isNp ? UiStrings.languageNp : UiStrings.languageEn,
+      fontSize: isNp ? UiStrings.fontSizeNp : UiStrings.fontSizeEn,
+      theme: isNp ? UiStrings.themeNp : UiStrings.themeEn,
+      themeSystem: isNp ? UiStrings.themeSystemNp : UiStrings.themeSystemEn,
+      themeLight: isNp ? UiStrings.themeLightNp : UiStrings.themeLightEn,
+      themeDark: isNp ? UiStrings.themeDarkNp : UiStrings.themeDarkEn,
+      about: isNp ? UiStrings.aboutNp : UiStrings.aboutEn,
+      share: isNp ? UiStrings.shareNp : UiStrings.shareEn,
+      date: isNp ? UiStrings.dateNp : UiStrings.dateEn,
+      source: isNp ? UiStrings.sourceNp : UiStrings.sourceEn,
+      tags: isNp ? UiStrings.tagsNp : UiStrings.tagsEn,
+      removeBookmark: isNp
+          ? UiStrings.removeBookmarkNp
+          : UiStrings.removeBookmarkEn,
+      tapToView: isNp ? UiStrings.tapToViewNp : UiStrings.tapToViewEn,
+      bookmarkedLabel: isNp
+          ? UiStrings.bookmarkedLabelNp
+          : UiStrings.bookmarkedLabelEn,
+      notBookmarkedLabel: isNp
+          ? UiStrings.notBookmarkedLabelNp
+          : UiStrings.notBookmarkedLabelEn,
+      languageNepali: isNp
+          ? UiStrings.languageNepali
+          : UiStrings.languageNepali,
+      languageEnglish: isNp
+          ? UiStrings.languageEnglish
+          : UiStrings.languageEnglish,
+      appVersion: UiStrings.appVersion,
+      all: isNp ? UiStrings.allNp : UiStrings.allEn,
+      readLabel: isNp ? UiStrings.readLabelNp : UiStrings.readLabelEn,
+    );
+  }
 }
