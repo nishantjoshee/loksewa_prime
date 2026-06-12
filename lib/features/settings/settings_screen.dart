@@ -19,7 +19,7 @@ class SettingsScreen extends ConsumerWidget {
             label: UiStrings.languageNp,
             child: ListTile(
               leading: const Icon(Icons.language),
-              title: Text(UiStrings.languageNp),
+              title: const Text(UiStrings.languageNp),
               subtitle: Text(settings.language == 'np' ? 'नेपाली' : 'English'),
               trailing: SegmentedButton<String>(
                 segments: const [
@@ -46,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
             label: UiStrings.fontSizeNp,
             child: ListTile(
               leading: const Icon(Icons.format_size),
-              title: Text(UiStrings.fontSizeNp),
+              title: const Text(UiStrings.fontSizeNp),
               subtitle: Slider(
                 value: settings.fontSize,
                 min: 14,
@@ -64,7 +64,7 @@ class SettingsScreen extends ConsumerWidget {
             label: UiStrings.themeNp,
             child: ListTile(
               leading: const Icon(Icons.brightness_6),
-              title: Text(UiStrings.themeNp),
+              title: const Text(UiStrings.themeNp),
               subtitle: Text(_themeLabel(settings.themeMode)),
               trailing: SegmentedButton<ThemeMode>(
                 segments: const [
@@ -93,10 +93,10 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           Semantics(
             label: UiStrings.aboutNp,
-            child: ListTile(
-              leading: const Icon(Icons.info_outline),
+            child: const ListTile(
+              leading: Icon(Icons.info_outline),
               title: Text(UiStrings.aboutNp),
-              subtitle: const Text(UiStrings.appVersion),
+              subtitle: Text(UiStrings.appVersion),
             ),
           ),
         ],

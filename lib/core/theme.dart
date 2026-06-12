@@ -35,7 +35,7 @@ class AppTheme {
 
   static final _inputDecorationTheme = InputDecorationTheme(
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
   );
 
   static ThemeData get light => ThemeData(
