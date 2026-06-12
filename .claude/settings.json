@@ -12,7 +12,9 @@
       "Bash(ls *)",
       "Bash(find *)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Bash(gh: *)",
+      "mcp__github__*"
     ],
     "deny": [
       "Bash(rm -rf *)",
