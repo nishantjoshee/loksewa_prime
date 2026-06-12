@@ -70,6 +70,9 @@ class BookmarksScreen extends ConsumerWidget {
                   isBookmarked: true,
                   language: language,
                   onTap: () => context.push('/detail/${entry.id}'),
+                  onToggleBookmark: () {
+                    bookmarksNotifier.remove(entry.id);
+                  },
                 ),
               );
             },

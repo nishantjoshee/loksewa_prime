@@ -20,32 +20,18 @@ class _CategoryChipsState extends ConsumerState<CategoryChips> {
     super.dispose();
   }
 
-  void _scrollToSelected(String? selected, List<String> categories) {
-    if (selected == null) {
-      _scrollController.animateTo(
-        0,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-      );
-      return;
-    }
-
-    final index = categories.indexOf(selected);
-    if (index == -1) return;
-
-    // Approximate offset: "All" chip + gap + previous chips
-    const allChipWidth = 70.0;
+  void _scrollToIndex(int index) {
+    if (!_scrollController.hasClients) return;
     const chipWidth = 100.0;
     const gap = 6.0;
-    final offset = allChipWidth + gap + (index * (chipWidth + gap)) - 40;
-
-    final target = offset.clamp(
+    const padding = 20.0;
+    final target = padding + (index * (chipWidth + gap)) - 40;
+    final clamped = target.clamp(
       0.0,
       _scrollController.position.maxScrollExtent,
     );
-
     _scrollController.animateTo(
-      target,
+      clamped,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
     );
@@ -60,9 +46,13 @@ class _CategoryChipsState extends ConsumerState<CategoryChips> {
         ? AppConstants.categoriesNp
         : AppConstants.categoriesEn;
 
-    // Auto-scroll when selection changes
     ref.listen(selectedCategoryProvider, (_, next) {
-      _scrollToSelected(next, categories);
+      if (next == null) {
+        _scrollToIndex(0);
+      } else {
+        final idx = categories.indexOf(next);
+        if (idx != -1) _scrollToIndex(idx + 1); // +1 for the "All" chip
+      }
     });
 
     return SizedBox(

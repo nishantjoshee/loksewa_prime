@@ -4,6 +4,7 @@ class AppConstants {
   static const String contentAssetPath = 'assets/content/current_affairs.json';
 
   static const String bookmarksKey = 'bookmarked_ids';
+  static const String readKey = 'read_entry_ids';
   static const String languageKey = 'preferred_language';
   static const String fontSizeKey = 'font_size';
   static const String themeKey = 'app_theme';

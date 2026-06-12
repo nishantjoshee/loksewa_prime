@@ -5,6 +5,7 @@ import '../../core/providers/language_provider.dart';
 import '../../core/ui_strings.dart';
 import '../../data/models/current_affair.dart';
 import '../bookmarks/bookmarks_providers.dart';
+import '../feed/read_providers.dart';
 import 'detail_providers.dart';
 
 class DetailScreen extends ConsumerWidget {
@@ -16,6 +17,8 @@ class DetailScreen extends ConsumerWidget {
     final detailAsync = ref.watch(detailProvider(entryId));
     final bookmarksNotifier = ref.watch(bookmarksProvider.notifier);
     final isBookmarked = ref.watch(bookmarksProvider).contains(entryId);
+    final readNotifier = ref.watch(readEntriesProvider.notifier);
+    final isRead = ref.watch(readEntriesProvider).contains(entryId);
     final strings = ref.watch(uiStringsProvider);
     final language = ref.watch(languageProvider);
 
@@ -23,6 +26,24 @@ class DetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(strings.detail),
         actions: [
+          Semantics(
+            label: isRead
+                ? language == 'np'
+                      ? 'नपढिएको चिन्ह लगाउनुहोस्'
+                      : 'Mark unread'
+                : language == 'np'
+                ? 'पढिसकिएको चिन्ह लगाउनुहोस्'
+                : 'Mark read',
+            button: true,
+            child: IconButton(
+              icon: Icon(isRead ? Icons.check_circle : Icons.circle_outlined),
+              onPressed: () {
+                isRead
+                    ? readNotifier.unmarkRead(entryId)
+                    : readNotifier.markRead(entryId);
+              },
+            ),
+          ),
           Semantics(
             label: isBookmarked ? strings.removeBookmark : strings.bookmarks,
             button: true,
