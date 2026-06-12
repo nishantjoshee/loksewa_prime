@@ -1,0 +1,66 @@
+{
+  "entries": [
+    {
+      "id": "1",
+      "title_np": "नेपालले बंगलादेशलाई ४० मेगावाट विद्युत् निर्यात सुरु",
+      "title_en": "Nepal begins exporting 40MW electricity to Bangladesh",
+      "summary_np": "नेपाल विद्युत् प्राधिकरणले भारतीय प्रसारण लाइन हुँदै बंगलादेशलाई ४० मेगावाट विद्युत् निर्यात सुरु गरेको छ। यो नेपालको तेस्रो मुलुकलाई विद्युत् निर्यात हो।",
+      "summary_en": "Nepal Electricity Authority has started exporting 40MW of electricity to Bangladesh via Indian transmission lines. This marks Nepal's electricity export to a third country.",
+      "category": "अर्थतन्त्र",
+      "category_en": "Economy",
+      "date": "2026-06-10",
+      "source": "Gorkhapatra",
+      "tags": ["energy", "export", "Bangladesh", "NEA"]
+    },
+    {
+      "id": "2",
+      "title_np": "सरकारले नयाँ शिक्षा नीति सार्वजनिक गर्याे",
+      "title_en": "Government unveils new education policy",
+      "summary_np": "शिक्षा मन्त्रालयले २०८३ सालदेखि लागु हुने नयाँ राष्ट्रिय शिक्षा नीति सार्वजनिक गरेको छ। नीतिले प्राविधिक शिक्षा र व्यावसायिक तालिमलाई जोड दिएको छ।",
+      "summary_en": "The Ministry of Education has unveiled the new National Education Policy effective from 2083 BS. The policy emphasizes technical education and vocational training.",
+      "category": "राजनीति",
+      "category_en": "Politics",
+      "date": "2026-06-09",
+      "source": "Kantipur",
+      "tags": ["education", "policy", "reform"]
+    },
+    {
+      "id": "3",
+      "title_np": "संयुक्त राष्ट्रसंघको मुख्य सचिवमा नयाँ नियुक्ति",
+      "title_en": "New UN Secretary-General appointed",
+      "summary_np": "संयुक्त राष्ट्रसंघको महासभाले नयाँ मुख्य सचिवको रुपमा ल्याटिन अमेरिकी उम्मेदवारलाई अनुमोदन गरेको छ। कार्यकाल २०८३ साउनदेखि सुरु हुनेछ।",
+      "summary_en": "The UN General Assembly has approved a Latin American candidate as the new Secretary-General. The term begins from Shrawan 2083 BS.",
+      "category": "अन्तर्राष्ट्रिय",
+      "category_en": "International",
+      "date": "2026-06-08",
+      "source": "BBC Nepali",
+      "tags": ["UN", "diplomacy", "international"]
+    },
+    {
+      "id": "4",
+      "title_np": "नेपालमा ५G परीक्षण सफल, २०८४ भित्र व्यावसायिक सेवा",
+      "title_en": "5G trial successful in Nepal, commercial service by 2084 BS",
+      "summary_np": "नेपाल टेलिकमले काठमाडौं उपत्यकामा ५G नेटवर्कको सफल परीक्षण गरेको छ। सरकारले २०८४ सालभित्र प्रमुख शहरहरूमा ५G सेवा विस्तार गर्ने लक्ष्य राखेको छ।",
+      "summary_en": "Nepal Telecom has successfully tested 5G network in Kathmandu Valley. The government aims to expand 5G services to major cities by 2084 BS.",
+      "category": "विज्ञान/प्रविधि",
+      "category_en": "Science/Tech",
+      "date": "2026-06-07",
+      "source": "Online Khabar",
+      "tags": ["5G", "technology", "telecom", "Nepal Telecom"]
+    },
+    {
+      "id": "5",
+      "title_np": "नेपालले एसीसी प्रिमियर कप क्रिकेटमा ऐतिहासिक जित",
+      "title_en": "Nepal secures historic win in ACC Premier Cup Cricket",
+      "summary_np": "नेपाली राष्ट्रिय क्रिकेट टोलीले एसीसी प्रिमियर कपमा युएईलाई ६ विकेटले हराउँदै सेमिफाइनलमा स्थान बनाएको छ। कप्तान रोहित पौडेलले शतक प्रहार गरे।",
+      "summary_en": "The Nepal national cricket team defeated UAE by 6 wickets in the ACC Premier Cup, securing a semi-final spot. Captain Rohit Paudel scored a century.",
+      "category": "खेलकुद",
+      "category_en": "Sports",
+      "date": "2026-06-10",
+      "source": "ESPN Cricinfo",
+      "tags": ["cricket", "ACC", "Nepal", "Rohit Paudel"]
+    }
+  ],
+  "last_updated": "2026-06-11",
+  "version": 1
+}
