@@ -6,6 +6,7 @@ import 'package:loksewa_prime/core/result.dart';
 import 'package:loksewa_prime/data/models/current_affair.dart';
 import 'package:loksewa_prime/data/repository/content_repo.dart';
 import 'package:loksewa_prime/features/feed/feed_screen.dart';
+import 'package:loksewa_prime/features/feed/widgets/filter_bar.dart';
 import 'package:loksewa_prime/core/theme.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,11 @@ void main() {
 
   Widget buildTestApp() {
     return ProviderScope(
-      overrides: [contentRepositoryProvider.overrideWithValue(mockRepo)],
+      overrides: [
+        contentRepositoryProvider.overrideWithValue(mockRepo),
+        timeFilterProvider.overrideWith((ref) => TimeFilter.all),
+        statusFilterProvider.overrideWith((ref) => StatusFilter.all),
+      ],
       child: MaterialApp(theme: AppTheme.light, home: const FeedScreen()),
     );
   }

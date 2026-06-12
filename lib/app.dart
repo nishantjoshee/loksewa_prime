@@ -36,12 +36,11 @@ class _AppState extends ConsumerState<App> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final settings = ref.watch(settingsProvider);
-
     return MaterialApp.router(
       title: 'Loksewa Prime',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+      darkTheme: AppTheme.light,
       themeMode: settings.themeMode,
       routerConfig: router,
       builder: (context, child) {

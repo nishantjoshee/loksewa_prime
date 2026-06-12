@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/current_affair.dart';
 import '../../data/repository/content_repo.dart';
+import 'widgets/filter_bar.dart';
 
 final feedProvider = FutureProvider<List<CurrentAffair>>((ref) async {
   final repo = ref.watch(contentRepositoryProvider);
@@ -41,6 +42,7 @@ class DateGroup {
 
 final groupedFeedProvider = Provider<AsyncValue<List<DateGroup>>>((ref) {
   final feedAsync = ref.watch(filteredFeedProvider);
+  final timeFilter = ref.watch(timeFilterProvider);
   return feedAsync.whenData((entries) {
     if (entries.isEmpty) return [];
 
@@ -48,6 +50,34 @@ final groupedFeedProvider = Provider<AsyncValue<List<DateGroup>>>((ref) {
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
     final weekAgo = today.subtract(const Duration(days: 7));
+    final monthStart =
+        '${today.year}-${today.month.toString().padLeft(2, '0')}';
+
+    // Apply time filter
+    entries = switch (timeFilter) {
+      TimeFilter.today =>
+        entries
+            .where(
+              (e) =>
+                  e.date ==
+                  '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}',
+            )
+            .toList(),
+      TimeFilter.week =>
+        entries
+            .where(
+              (e) =>
+                  e.date.compareTo(
+                    '${weekAgo.year}-${weekAgo.month.toString().padLeft(2, '0')}-${weekAgo.day.toString().padLeft(2, '0')}',
+                  ) >=
+                  0,
+            )
+            .toList(),
+      TimeFilter.month =>
+        entries.where((e) => e.date.startsWith(monthStart)).toList(),
+      TimeFilter.all => entries,
+    };
+    if (entries.isEmpty) return [];
 
     final todayStr =
         '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';

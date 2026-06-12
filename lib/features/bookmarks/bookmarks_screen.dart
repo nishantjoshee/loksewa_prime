@@ -42,7 +42,7 @@ class BookmarksScreen extends ConsumerWidget {
           }
 
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(top: 4),
             itemCount: entries.length,
             itemBuilder: (context, index) {
               final entry = entries[index];

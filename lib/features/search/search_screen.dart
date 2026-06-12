@@ -111,7 +111,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         );
                       }
                       return ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.only(top: 4),
                         itemCount: entries.length,
                         itemBuilder: (context, index) {
                           final entry = entries[index];
